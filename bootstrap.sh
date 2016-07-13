@@ -1,5 +1,18 @@
 #!/bin/bash
 
+JAVA=`which java`
+if [ "$?" != "0" ]; then 
+    echo "No JAVA installation found. Export JAVA_HOME. Bailing out!"
+    exit 1
+fi
+
+CONSUL_HOST=$CONSUL_HOST
+CONSUL_PORT=$CONSUL_PORT
+if [ -z "$CONSUL_HOST" ] || [ -z "$CONSUL_PORT" ]; then
+    echo "ERROR - export CONSUL_HOST & CONSUL_PORT with your consul host, port settings."
+    exit 1
+fi
+
 PATH=$PATH:`pwd`
 CONSUL_TEMPLATE=`which consul-template`
 if [ "$?" != "0" ]; then
@@ -8,14 +21,21 @@ if [ "$?" != "0" ]; then
     read -p "Do you want to install consul-template? (y/n)[n]" -n 1 -r 
     echo ""
     echo "."
+    
+    OS=`uname -s`
+    DIST=linux_amd64
+    if [ "$OS" == "Darwin" ]; then 
+        DIST=darwin_amd64
+    fi
+
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        wget https://releases.hashicorp.com/consul-template/0.15.0/consul-template_0.15.0_linux_amd64.zip
+        wget https://releases.hashicorp.com/consul-template/0.15.0/consul-template_0.15.0_${DIST}.zip
         if [ "$?" != "0" ]; then 
             echo "failure in downloading consul-template for ubuntu. bailing out!"
             exit 1
         fi
 
-        unzip consul-template_0.15.0_linux_amd64.zip
+        unzip consul-template_0.15.0_${DIST}.zip
         if [ "$?" != "0" ]; then
             echo "failure in extracting consul-template-*.zip. Do you have unzip? bailing out!"
             exit 1
