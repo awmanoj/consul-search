@@ -21,3 +21,9 @@ Basically I want to use `consul-template` [0][1], `elastic search` [2], `elastic
 # Limitations 
 
 Depending on the size of data on your `consul` cluster you may need appropriate `elastic search` setup. In my case it is limited to `few thousand keys` and a single node setup with limited memory works. As I already mentioned it's a quick and dirty setup but I think you get the idea and can modify accordingly for scaling. 
+
+# Notes (todo)
+
+* externalize key prefix in `.ctmpl` code. `.ctmpl` looks for keys with prefix `service`.
+* externalize `index name`, `type` (unused currently). 
+

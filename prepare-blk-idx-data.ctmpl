@@ -1,0 +1,3 @@
+{{range $idx, $key := tree "service"}}{{range $jdx, $val := $key.Value | split "\n" }}{ "index" : { "_index" : "consul", "_type" : "unused", "_id" : "{{ $idx }}{{ $jdx }}" } }
+{ "Key" : "{{$key.Path | replaceAll "\"" ""}}", "Value" : "{{ . | replaceAll "\"" ""}}" }
+{{end}}{{end}}

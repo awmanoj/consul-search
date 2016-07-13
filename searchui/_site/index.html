@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>ElasticUI Demo</title>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script src="http://code.angularjs.org/1.2.16/angular.js"></script>
+    <script src="http://rawgit.com/YousefED/ElasticUI/master/examples/demo/lib/elasticsearch.angular.js"></script>
+    <script src="http://rawgit.com/YousefED/ElasticUI/master/examples/demo/lib/elastic.js"></script>
+    <script src="http://rawgit.com/YousefED/ElasticUI/master/dist/elasticui.min.js"></script>
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            z-index: 1000;
+            display: block;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+            border-right: 1px solid #eee;
+        }
+
+        .instructions {
+            display: block;
+            margin: 0 auto;
+            width: 450px;
+        }
+    </style>
+    <script>
+        angular
+            .module('tutorial', ['elasticui'])
+            .constant('euiHost', 'http://localhost:9200'); // ACTION: change to cluster address
+    </script>
+</head>
+<body ng-app="tutorial" eui-index="'consul'"><!-- ACTION: change to index name -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-3 sidebar">
+                <h3>Search Keys</h3>
+                <eui-searchbox field="'Key'"></eui-searchbox> <!-- ACTION: change to field to search on -->
+                <h3>Search Values</h3>
+                <eui-searchbox field="'Value'"></eui-searchbox> <!-- ACTION: change to field to search on -->
+                <hr/>
+                <h3>Single select facet</h3>
+                <eui-singleselect field="'Key'" size="5"></eui-singleselect> <!-- ACTION: change to field to use as facet -->
+                <h3>Multi select facet</h3>
+                <eui-checklist field="'Key'" size="10"></eui-checklist> <!-- ACTION: change to field to use as facet -->
+                <h3>Results Per Page</h3>
+                <select ng-model="indexVM.pageSize">
+                    <option ng-repeat="item in [10, 20, 50, 100]">{{item}}</option>
+                </select>
+            </div>
+            <div class="col-xs-9 col-xs-offset-3 main">
+                <h1>Results</h1>
+                <ul>
+                    <li ng-repeat="doc in indexVM.results.hits.hits">
+                        {{doc._source | json | limitTo: 500}} <!-- OPTIONAL: display more meaningful data instead of json -->
+                    </li>
+                </ul>
+                <eui-simple-paging></eui-simple-paging>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
