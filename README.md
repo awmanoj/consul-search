@@ -3,11 +3,21 @@ quick and dirty UI to search for keys and values in consul.
 
 [Consul](https://www.consul.io/) is a service discovery and configuration management platform. It can be said to be in the same league as `etcd`, `zookeeper`, `eureka` etc. Add to that - it works across datacenters. Add to that - it is very simple. Recently, we have been using `consul` for keeping configuration management by using it as a `key value store`. You can read more about `consul`, `consul-template` and `consul-webui` by using any of your [favorite](https://duckduckgo.com/) [search] (https://www.google.com) [engines] (https://www.bing.com). 
 
-If you have a team size of more than a few then you want people to not create duplicate keys (`different name but same values`) and that requires that people should be able to check if there is already a value added and what its corresponding key is. This [feature request](https://github.com/hashicorp/consul/issues/1905) is already open on consul and doesn't look like a priority as of now: 
+If you have a team size of more than a few then it becomes difficult to track that people do not create duplicate keys (`different name but same values`) and it then requires that people should be able to *easily* check if there is already a value added and what its corresponding key is. This [feature request](https://github.com/hashicorp/consul/issues/1905) is already open on consul and doesn't look like a priority as of now: 
 
 https://github.com/hashicorp/consul/issues/1905
 
 So here comes the purpose of this project - to act as a temporary filler for the above request. 
+
+# Getting Started 
+
+```
+$ git clone https://github.com/awmanoj/consul-search.git
+$ cd consul-search
+$ export CONSUL_HOST=`YOUR_CONSUL_HOST`
+$ export CONSUL_PORT=`YOUR_CONSUL_PORT`
+$ bash bootstrap.sh   
+```
 
 # Idea
 
