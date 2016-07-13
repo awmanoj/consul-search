@@ -60,27 +60,35 @@ if [ ! -d "$ESDIR" ]; then
         wget $ESURL
     fi
     tar -xvzf $ESTGZ
+    
+    echo "."
+    echo "Copying searchui (elasticUI) into Elastic Search."
+    echo "."
+   
+    mkdir $ESDIR/plugins >/dev/null 2>&1
+    cp -r searchui $ESDIR/plugins
+    ls $ESDIR/plugins
 fi
 
+echo "." 
+echo "Kill any current processes running ES."
 echo "."
-echo "Copying searchui (elasticUI) into Elastic Search."
-echo "."
-cp -r searchui $ESDIR/plugins
+ps ax  | grep elasticsearch | awk '{print $1}' | xargs kill -9 2>/dev/null
 
 echo "."
 echo "Starting elasticsearch service."
 echo "."
 nohup $ESDIR/bin/elasticsearch >es.log 2>&1 & 
 echo "."
-echo "Sleep for 5s."
+echo "Sleep for 10s."
 echo "."
-sleep 5
+sleep 10
 
 INDEXFILE=`mktemp /tmp/consul-XXXXXXXX`
 echo "."
 echo "Querying consul and preparing index file: $INDEXFILE ."
 echo "."
-consul-template -consul $CONSUL_HOST:$CONSUL_PORT -template="prepare-blk-idx-data.ctmpl:$INDEXFILE"
+consul-template -consul $CONSUL_HOST:$CONSUL_PORT -template="prepare-blk-idx-data.ctmpl:$INDEXFILE" -once
 
 INDEXNAME=`cat $INDEXFILE | grep index | awk -F\" '{print $6}' | head -1`
 
